@@ -115,6 +115,23 @@
             padding: 0 15px;
         }
 
+        .checkbox-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: -60px;
+            margin-bottom: 30px;
+            font-size: 22px;
+            color: #1452a0;
+        }
+
+        .checkbox-row input {
+            width: 22px;
+            height: 22px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
 
         /* =========================
            BUTTON
@@ -149,6 +166,32 @@
 
         input[type="submit"]:hover {
             background-color: #ffffb0;
+        }
+
+        #message {
+            text-align: center;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            width: 70%;
+            min-height: 30px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+            display: block;
+        }
+
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #ebccd1;
+            display: block;
         }
 
 
@@ -278,39 +321,65 @@
 
         <h1>Login to your account</h1>
 
+        <form id="loginForm">
+            <div class="row">
+                <label for="username">User Name</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username">
+            </div>
 
-        <!-- User Name -->
+            <div class="row">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password">
+            </div>
 
-        <div class="row">
+            <div class="checkbox-row">
+                <input type="checkbox" id="showPassword">
+                <label for="showPassword">Show Password</label>
+            </div>
 
-            <label>User Name</label>
+            <div id="message"></div>
 
-            <input type="text">
-
-        </div>
-
-
-        <!-- Password -->
-
-        <div class="row">
-
-            <label>Password</label>
-
-            <input type="password">
-
-        </div>
-
-
-        <!-- Sign In -->
-
-        <div class="button">
-
-            <input type="submit" value="Sign in">
-
-        </div>
+            <div class="button">
+                <input type="submit" value="Sign in">
+            </div>
+        </form>
 
     </div>
 
+    <script>
+        const form = document.getElementById('loginForm');
+        const username = document.getElementById('username');
+        const password = document.getElementById('password');
+        const message = document.getElementById('message');
+        const showPassword = document.getElementById('showPassword');
+
+        showPassword.addEventListener('change', function () {
+            const type = this.checked ? 'text' : 'password';
+            password.type = type;
+        });
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const usernameValue = username.value.trim();
+            const passwordValue = password.value.trim();
+
+            if (usernameValue === '' || passwordValue === '') {
+                message.textContent = 'Please enter both username and password.';
+                message.className = 'error';
+                return;
+            }
+
+            if (usernameValue === 'admin' && passwordValue === 'admin123') {
+                message.textContent = 'Login successful! Welcome, ' + usernameValue + '.';
+                message.className = 'success';
+                localStorage.setItem('loggedInUser', usernameValue);
+            } else {
+                message.textContent = 'Invalid username or password.';
+                message.className = 'error';
+            }
+        });
+    </script>
 
 </body>
 </html>
